@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-// === 1. KHỞI TẠO HỆ THỐNG & GÓC NHÌN CHÉO TỪ TRÊN XUỐNG ===
+// 1. KHỞI TẠO HỆ THỐNG & GÓC NHÌN CHÉO TỪ TRÊN XUỐNG 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x2563eb); // Màu nền xanh Blueprint
 
@@ -28,7 +28,7 @@ gridHelper.material.transparent = true;
 gridHelper.position.y = -0.05; // Hạ thấp một chút để không xuyên qua sàn nhà
 scene.add(gridHelper);
 
-// === 2. XÂY DỰNG MẶT BẰNG & VÁCH NGĂN ===
+// 2. XÂY DỰNG MẶT BẰNG & VÁCH NGĂN 
 const wallMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8 });
 const floorMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.5 });
 
@@ -52,35 +52,16 @@ buildWall(15.2, 3, 0.2, 0, 6);     // Tường trước
 buildWall(0.2, 3, 12, -7.5, 0);      // Tường trái
 buildWall(0.2, 3, 12, 7.5, 0);       // Tường phải
 
-// Xây vách ngăn bên trong (Chia phòng)
-// Bức vách này nằm ở tọa độ x = -2, tạo thành 2 không gian trái/phải
+// Xây vách ngăn bên trong 
 buildWall(2.2, 3, 0.2, 0.9, -5.4); 
 buildWall(0.2, 3, 0.7, 1.9, -5.7);  
 buildWall(0.2, 3, 0.7, -0.1, -5.7);  
 
 
 
-/*
-// === 3. HỆ THỐNG ĐÈN SA BÀN ===
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-scene.add(ambientLight);
 
-// Đèn định hướng chiếu chéo từ trên xuống cho toàn bộ sa bàn
-const mainLight = new THREE.DirectionalLight(0xfff1e0, 2.5);
-mainLight.position.set(10, 15, 10);
-mainLight.castShadow = true;
-// Mở rộng vùng phủ bóng đổ để bao trọn sàn nhà 16x10
-mainLight.shadow.camera.left = -10;
-mainLight.shadow.camera.right = 10;
-mainLight.shadow.camera.top = 10;
-mainLight.shadow.camera.bottom = -10;
-scene.add(mainLight);
-*/
-
-
-// ==========================================
 // 3. HỆ THỐNG ĐÈN & ÁNH SÁNG NỀN
-// ==========================================
+
 
 // Chọn 1 trong các mã màu sau cho AmbientLight (Ánh sáng khi tắt đèn chính):
 // 0x111122 : Xanh đen/Xanh đêm (Cảm giác tối muộn, dễ chịu) - Khuyên dùng!
@@ -131,15 +112,15 @@ function toggleLight() {
     }
 }
 
-// Gắn bộ lắng nghe sự kiện Click chuột vào nút
-if (lightWidget) {
-    lightWidget.addEventListener('click', toggleLight);
-}
+    // Gắn bộ lắng nghe sự kiện Click chuột vào nút
+    if (lightWidget) {
+        lightWidget.addEventListener('click', toggleLight);
+    }
 
 
 
 
-// === 4. TẢI MÔ HÌNH 3D (TỰ ĐỘNG CHUẨN HÓA KÍCH THƯỚC) ===
+// 4. TẢI MÔ HÌNH 3D (TỰ ĐỘNG CHUẨN HÓA KÍCH THƯỚC) 
 const loader = new GLTFLoader();
 
 function loadModel(path, position, targetHeight, rotationY = 0) {
@@ -179,7 +160,7 @@ function loadModel(path, position, targetHeight, rotationY = 0) {
     );
 }
 
-// ===5. QUẢN LÝ KHU VỰC VÀ VỊ TRÍ ĐẶT NGƯỜI (Cho phòng 15x12) ===
+// 5. QUẢN LÝ KHU VỰC VÀ VỊ TRÍ ĐẶT NGƯỜI (Cho phòng 15x12)
 
 // Trục X: -7.5 đến 7.5 | Trục Z: -6.0 đến 6.0
 const roomZones = {
@@ -265,11 +246,9 @@ function spawnPersonAt(zoneName, slotIndex) {
     loader.load('/models/person.glb', (gltf) => {
         const model = gltf.scene;
         
-        // ========================================================
-        // 1. TỰ ĐỘNG SCALE KÍCH THƯỚC NGƯỜI THEO TỶ LỆ PHÒNG (15x12)
-        // ========================================================
+     
+        // TỰ ĐỘNG SCALE KÍCH THƯỚC NGƯỜI THEO TỶ LỆ PHÒNG (15x12)
         const targetHeight = 1.5; // Ép chiều cao mô hình người về đúng 1.6 mét trong không gian 3D
-        
         const box = new THREE.Box3().setFromObject(model);
         const size = new THREE.Vector3();
         box.getSize(size);
@@ -278,26 +257,26 @@ function spawnPersonAt(zoneName, slotIndex) {
         const scaleFactor = targetHeight / size.y;
         model.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-         //2. Bật tính năng đổ bóng cho nhân vật nhìn cho thật
+        // Bật tính năng đổ bóng cho nhân vật nhìn cho thật
         model.traverse((child) => {
             if (child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
-          }
+            }
         });
 
-        // 3. Đặt tọa độ X, Z và Góc xoay (RY) theo điểm neo đã cấu hình
+        // Đặt tọa độ X, Z và Góc xoay (RY) theo điểm neo đã cấu hình
         model.position.x = slot.x;
         model.position.z = slot.z;
         model.rotation.y = slot.ry;
 
-        // 4. TỰ ĐỘNG CĂN CHÂN CHẠM SÀN (Không để người bị lún hay lơ lửng)
+        //  TỰ ĐỘNG CĂN CHÂN CHẠM SÀN (Không để người bị lún hay lơ lửng)
         // Vì sàn dày 0.1 và đặt ở tâm (0,0,0) nên mặt sàn trên cùng ở tọa độ Y = 0.05
         const updatedBox = new THREE.Box3().setFromObject(model);
         const floorTopY = 0.05; 
         model.position.y = floorTopY - updatedBox.min.y;
 
-        // 5. Đưa vào không gian và lưu vết để quản lý
+        // Đưa vào không gian và lưu vết để quản lý
         scene.add(model);
         activePeopleInRoom.push(model);
     });
@@ -330,12 +309,11 @@ function clearAllPeople() {
 
 
 function updateRoomByCameraCount(cameraData) {
-    // 1. Xóa sạch người cũ trên sa bàn
+    // a. Xóa sạch người cũ trên sa bàn
     clearAllPeople();
-
     let totalPeople = 0;
 
-    // 2. Duyệt qua dữ liệu và spawn người mới
+    // b. Duyệt qua dữ liệu và spawn người mới
     for (const zoneName in cameraData) {
         const count = cameraData[zoneName];
         totalPeople += count; // Cộng dồn tổng số người đang có mặt
@@ -345,7 +323,7 @@ function updateRoomByCameraCount(cameraData) {
         }
     }
 
-    // 3. ĐIỀU KHIỂN NÚM TRÒN HÌNH NGƯỜI TỰ ĐỘNG
+    // c. ĐIỀU KHIỂN NÚM TRÒN HÌNH NGƯỜI TỰ ĐỘNG
     const peopleWidget = document.getElementById('people-widget');
     if (peopleWidget) {
         if (totalPeople > 0) {
@@ -415,46 +393,9 @@ setTimeout(() => {
 
 
 
-
-
-/*
-let currentStep = 0;
-
-function runManualTest() {
-    console.log("--- BẮT ĐẦU TEST HỆ THỐNG TRONG 10 GIÂY ---");
-
-    const testInterval = setInterval(() => {
-        if (currentStep >= testScenarios.length) {
-            clearInterval(testInterval); // Dừng lại sau 10 giây (5 bước)
-            console.log("--- KẾT THÚC TEST ---");
-            // Tùy chọn: Xóa sạch người khi kết thúc test
-            // clearAllPeople(); 
-            return;
-        }
-
-        const currentData = testScenarios[currentStep];
-        
-        console.log(`Giây thứ ${(currentStep + 1) * 2}:`, currentData);
-        
-        // Gọi hàm cập nhật hiển thị 3D
-        updateRoomByCameraCount(currentData);
-
-        currentStep++;
-    }, 4000); // 2000ms = 2 giây
-}
-
-// Kích hoạt test sau khi trang web tải xong 1 giây để đảm bảo mô hình đã sẵn sàng
-setTimeout(runManualTest, 1000);
-*/
-
-
-
-// === 7. VÒNG LẶP RENDER MÀN HÌNH ===
+// 7. VÒNG LẶP RENDER MÀN HÌNH 
 function animate() {
     requestAnimationFrame(animate);
-    
-    // Đã xóa bỏ đoạn Math.sin() gây nhấp nháy
-    // Bây giờ vòng lặp chỉ làm đúng 1 nhiệm vụ là vẽ lại 3D
     renderer.render(scene, camera);
 }
 
@@ -467,57 +408,3 @@ window.addEventListener('resize', () => {
 
 animate();
 
-
-
-
-
-
-
-
-
-//                        ĐOẠN INDEX.HTML CŨ
-/*
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Twin Classroom - Mock Simulation</title>
-    <style>
-        body { margin: 0; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        * Bảng điều khiển hiển thị thông số cảm biến *
-        #dashboard {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(15, 23, 42, 0.85);
-            color: #f8fafc;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            pointer-events: none; * Giúp chuột có thể xuyên qua bảng để xoay phòng 3D *
-            min-width: 200px;
-        }
-        h3 { margin: 0 0 10px 0; font-size: 16px; color: #38bdf8; letter-spacing: 0.5px; }
-        hr { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 15px; }
-        .stat { margin-bottom: 10px; font-size: 14px; display: flex; justify-content: space-between; }
-        .value { font-weight: bold; color: #4ade80; }
-    </style>
-</head>
-<body>
-
-    <div id="dashboard">
-        <h3>🏫 DIGITAL TWIN PHÒNG HỌC</h3>
-        <hr>
-        <div class="stat">Nhiệt độ: <span id="temp-value" class="value">--°C</span></div>
-        <div class="stat">Ánh sáng đèn: <span id="light-value" class="value">-- Lux</span></div>
-    </div>
-    <button id="toggle-light-btn" style="margin-top: 10px; padding: 8px 16px; cursor: pointer;">
-    Bật / Tắt Đèn
-    </button>   
-    <script type="module" src="/main.js"></script>
-</body>
-</html>
-*/
