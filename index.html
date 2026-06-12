@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Twin Classroom</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { margin: 0; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        /* Chuyển Dashboard thành dạng lưới ngang chứa các hình tròn */
+        #dashboard {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 15px; /* Khoảng cách giữa các vòng tròn */
+            pointer-events: none; /* Chuột vẫn xuyên qua để xoay 3D được */
+        
+        }
+
+        /* Định dạng chung cho các vòng tròn */
+        .circle-widget {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.7); /* Màu nền tối hơi trong suốt */
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
+
+            pointer-events: auto; /* Cho phép vòng tròn nhận sự kiện click */
+            cursor: pointer;      /* Biến con trỏ chuột thành hình bàn tay khi di qua */
+        }
+
+        /* Thêm hiệu ứng bóp nhỏ lại một chút khi click cho giống nút bấm thật */
+        .circle-widget:active {
+        transform: scale(0.95);
+        }
+
+        /* Style riêng cho chữ nhiệt độ */
+        #temp-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #38bdf8; /* Màu xanh nước biển nhạt */
+        }
+
+        /* Style riêng cho icon bóng đèn */
+        #light-icon {
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.5); /* Lúc tắt đèn icon màu xám mờ */
+        }
+
+        /* LỚP (CLASS) KÍCH HOẠT KHI ĐÈN SÁNG */
+        .circle-widget.light-on {
+            background: rgba(255, 215, 0, 0.15); /* Nền vàng nhạt */
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); /* Viền phát sáng */
+        }
+        
+        .circle-widget.light-on #light-icon {
+            color: #ffd700; /* Icon chuyển màu vàng sáng */
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        /* Style riêng cho icon người */
+        #people-icon {
+            font-size: 26px;
+            color: rgba(255, 255, 255, 0.5); /* Mặc định lúc phòng trống thì màu xám mờ */
+            transition: all 0.3s ease;
+        }
+
+        /* LỚP KÍCH HOẠT KHI TRONG PHÒNG CÓ NGƯỜI (Sáng màu xanh lá cực đẹp) */
+        .circle-widget.people-active {
+            background: rgba(74, 222, 128, 0.15); /* Nền xanh lá nhạt */
+            border-color: #4ade80;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.6);
+        }
+
+        .circle-widget.people-active #people-icon {
+            color: #4ade80; /* Icon chuyển xanh sáng */
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.8);
+        }
+
+        
+    </style>
+</head>
+<body>
+
+    <div id="dashboard">
+        <div class="circle-widget" id="temp-widget">
+            <span id="temp-value">25°C</span>
+        </div>
+        
+        <div class="circle-widget" id="light-widget">
+            <i class="fas fa-lightbulb" id="light-icon"></i>
+        </div>
+
+        <div class="circle-widget" id="people-widget" style="cursor: default;">
+            <i class="fas fa-user" id="people-icon"></i>
+        </div>
+    </div>
+    
+    
+
+    <script type="module" src="/main.js"></script>
+</body>
+</html>
